@@ -112,7 +112,8 @@ The Neutron OVS plugin has to be deleted from compute & Network node because Neu
 
 Connect Open vSwitch with Open Daylight 
 =======================================
-Local IP has to be given within Open vSwitch to create tunnels. Command given below is used for that purpose.
+Local IP has to be given within Open vSwitch to create tunnels. 
+* Command given below is used for that purpose::
 
     # ovs-vsctl set Open_vSwitch <OPENVSWITCH ID> other_config:local_ip=’IP address’
 
@@ -123,8 +124,7 @@ Local IP has to be given within Open vSwitch to create tunnels. Command given be
 * To set the manager for openvswitch::
 
     # ovs-vsctl set-manager tcp:10.0.0.100:6640
- 
-This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches.
+    This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches.
 
     [root@compute1 ~]# ovs-vsctl show 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
         Manager "tcp:10.0.0.100:6640"
@@ -179,7 +179,7 @@ Verify the Integration
 ======================
 The integration process has been completed, Now verification has to be carried out by creating the networks on Open Stack and then it is checked whether the same is reflected on Open Daylight or not. 
 
-*Verification::
+* Verification::
 
     # neutron router-create demo-router
     # neutron net-create demo-net

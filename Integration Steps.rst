@@ -51,6 +51,7 @@ Download the latest version of Open Daylight from their `official website <https
 
     ./bin/start
 Controller will start subsequently, in case ports have to be checked, **netstat –ntl** is the command.
+
 * To take the access of controller as a client::
 
     ./bin/client –u karaf

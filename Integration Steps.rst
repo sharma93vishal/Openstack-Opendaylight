@@ -264,3 +264,13 @@ Networks which are made on the openstack, can be seen on the Open Daylight throu
       "segments" : [ ]
        } ]
     }
+
+Your contributions are welcome, as are questions and requests for help 
+
+Hope this manual will be helpful 
+
+Contacts
+========
+
+Vishal Sharma: vsharma1@ualberta.ca
+

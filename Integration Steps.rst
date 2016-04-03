@@ -66,7 +66,7 @@ Controller will start subsequently, in case ports have to be checked, **netstat 
 
 * After this, to check whether everything works fine, use curl command. It will show empty network list::
 
-    **curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks**
+    curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks
 
 Erase all VMs, Networks, Routers & Ports in Controller Node 
 ===========================================================

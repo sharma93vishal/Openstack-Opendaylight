@@ -30,8 +30,8 @@ Installation of Open Daylight
 
 **Prerequisites** :
 
- 1. Open Daylight software runs on platform independent Java virtual machine and can be installed on any Operating system on which Java is installed.
- 2. The basic requirement is to install it on a system with a multi-core processor and 8 GB RAM in order to get optimum results.
+1. Open Daylight software runs on platform independent Java virtual machine and can be installed on any Operating system on which Java is installed.
+2. The basic requirement is to install it on a system with a multi-core processor and 8 GB RAM in order to get optimum results.
 
 * Command to install java jdk on Linux (Ubuntu)::
 

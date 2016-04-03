@@ -124,7 +124,7 @@ Local IP has to be given within Open vSwitch to create tunnels. Command given be
 
     # ovs-vsctl set-manager tcp:10.0.0.100:6640
  
-This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches, high level control flow is given below, to explain the methodology.
+This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches.
 
     [root@compute1 ~]# ovs-vsctl show 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
         Manager "tcp:10.0.0.100:6640"
@@ -137,3 +137,118 @@ This command will use ODL controller a manager for the OVS and create the br-int
         ovs_version: "2.3.2"
 
 
+Configure ml2_conf.ini for Open Daylight driver
+===============================================
+
+* Edit /etc/neutron/plugins/ml2/ml2_conf.ini file in the Network node & Controller nodes only::
+
+    type_drivers = flat,vlan,gre,vxlan
+    tenant_network_types = gre,vxlan
+    mechanism_drivers=opendaylight
+    [ml2_type_gre]
+    tunnel_id_ranges = 1:1000
+    [ml2_type_vxlan]
+    vni_ranges = 1:1000
+    vxlan_group = 239.1.1.1
+    [ml2_odl]
+    password = admin
+    username = admin
+    url = http://10.0.0.100:8080/controller/nb/v2/neutron
+
+Configure Neutron Database 
+==========================
+Neutron database has to be cleaned because of the no compatibility of Open vSwitch neutron plugin database with Open Daylight. And Open Daylight demands a clean slate of the configuration.
+
+* SQL commands to delete & create neutron database::
+
+    # mysql –u root –p
+    # drop database neutron;
+    # create database neutron;
+    # grant all privileges on neutron.* to 'neutron'@'localhost' identified by 'neutron_openstack';
+    # grant all privileges on neutron.* to 'neutron'@'%' identified by 'neutron_openstack';
+    # exit
+* To get the database schema for neutron databse::
+
+    # su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+
+* Restart the Neutron-server:: 
+
+    # service neutron-server start
+
+Verify the Integration 
+======================
+The integration process has been completed, Now verification has to be carried out by creating the networks on Open Stack and then it is checked whether the same is reflected on Open Daylight or not. 
+
+*Verification::
+
+    # neutron router-create demo-router
+    # neutron net-create demo-net
+    # neutron subnet-create demo-net –name=demo_subnet 192.168.1.0/24
+    # neutron router-interface-add demo-router demo_subnet
+    # nova boot --flavor m1.tiny --image cirros-0.3.4-x86_64 --nic net-id=b680774d-69ff-4552-9676-5851f04ce812 --security-group default  demo-instance1
+
+    +--------------------------------------+------------------------------------------------------------+
+    | Property                             | Value                                                      |
+    +--------------------------------------+------------------------------------------------------------+
+    | OS-DCF:diskConfig                    | MANUAL                                                     |
+    | OS-EXT-AZ:availability_zone          | nova                                                       |
+    | OS-EXT-SRV-ATTR:host                 | -                                                          |
+    | OS-EXT-SRV-ATTR:hypervisor_hostname  | -                                                          |
+    | OS-EXT-SRV-ATTR:instance_name        | instance-00000037                                          |
+    | OS-EXT-STS:power_state               | 0                                                          |
+    | OS-EXT-STS:task_state                | scheduling                                                 |
+    | OS-EXT-STS:vm_state                  | building                                                   |
+    | OS-SRV-USG:launched_at               | -                                                          |
+    | OS-SRV-USG:terminated_at             | -                                                          |
+    | accessIPv4                           |                                                            |
+    | accessIPv6                           |                                                            |
+    | adminPass                            | f7D8sVB9A9Tx                                               |
+    | config_drive                         |                                                            |
+    | created                              | 2016-03-23T21:38:31Z                                       |
+    | flavor                               | m1.tiny (1)                                                |
+    | hostId                               |                                                            |
+    | id                                   | 6294eebc-99d5-48f0-a22a-28315b6d61dd                       |
+    | image                                | cirros-0.3.4-x86_64 (4d708949-5377-413c-ab49-6d31a5f44e7b) |
+    | key_name                             | -                                                          |
+    | metadata                             | {}                                                         |
+    | name                                 | demo-instance1                                             |
+    | os-extended-volumes:volumes_attached | []                                                         |
+    | progress                             | 0                                                          |
+    | security_groups                      | default                                                    |
+    | status                               | BUILD                                                      |
+    | tenant_id                            | ba95a008263b44759568151a773070b1                           |
+    | updated                              | 2016-03-23T21:38:31Z                                       |
+    | user_id                              | 0008b6dbffaf45218f94e7706e070d6b                           |
+    +--------------------------------------+------------------------------------------------------------+
+
+Network reflection on the Open Daylight
+=======================================
+Networks which are made on the openstack, can be seen on the Open Daylight through curl command
+* Use curl command to check the networks::
+
+    root@controller:~# curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks
+    {
+      "networks" : [ {
+      "id" : "0ac8090d-ad92-4e46-b4c1-f77df9629deb",
+      "tenant_id" : "d13aef590ba04caca70a00ea020b8e79",
+      "name" : "demo-private",
+      "admin_state_up" : true,
+      "shared" : false,
+      "router:external" : false,
+      "provider:network_type" : "gre",
+      "provider:segmentation_id" : "97",
+      "status" : "ACTIVE",
+      "segments" : [ ]
+      }, {
+      "id" : "ee477bb0-63ad-4b05-abad-f3abac812ec1",
+      "tenant_id" : "d13aef590ba04caca70a00ea020b8e79",
+      "name" : "Marketing",
+      "admin_state_up" : true,
+      "shared" : false,
+      "router:external" : false,
+      "provider:network_type" : "gre",
+      "provider:segmentation_id" : "33",
+      "status" : "ACTIVE",
+      "segments" : [ ]
+       } ]
+    }

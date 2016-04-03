@@ -49,13 +49,14 @@ Controller will start subsequently, in case ports have to be checked, **netstat 
 To take the access of controller as a client: 
 **./bin/client –u karaf**
 
+.. Image:: https://github.com/sharma93vishal/Openstack-Opendaylight/blob/master/Images/Picture1.png
 
 
 
 To use Open Daylight with Open Stack, the features of Open Stack have to be installed on the controller.
 
-opendaylight-user@root>feature:install odl-ovsdb-openstack odl-dlux-all 
+**opendaylight-user@root>feature:install odl-ovsdb-openstack odl-dlux-all**
 
 Command given above will install all the features to connect with Open Stack.
 After this, to check whether everything works fine, use curl command. It will show empty network list.
-curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks
+**curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks**

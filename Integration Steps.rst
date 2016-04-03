@@ -124,7 +124,7 @@ Local IP has to be given within Open vSwitch to create tunnels. Command given be
 
     # ovs-vsctl set-manager tcp:10.0.0.100:6640
  
- This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches, high level control flow is given below, to explain the methodology.
+This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches, high level control flow is given below, to explain the methodology.
 
     [root@compute1 ~]# ovs-vsctl show 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
         Manager "tcp:10.0.0.100:6640"

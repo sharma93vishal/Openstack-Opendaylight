@@ -105,20 +105,21 @@ Local IP has to be given within Open vSwitch to create tunnels. Command given be
 
 * Create bridge br-ex for external traffic::
 
- # ovs-vsctl add-br br-ex
- # ovs-vsctl add-port br-ex eth1
+ **# ovs-vsctl add-br br-ex**
+ **# ovs-vsctl add-port br-ex eth1**
 * To set the manager for openvswitch::
- # ovs-vsctl set-manager tcp:10.0.0.100:6640
+ **# ovs-vsctl set-manager tcp:10.0.0.100:6640**
  
  This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches, high level control flow is given below, to explain the methodology.
 
-[root@compute1 ~]# ovs-vsctl show
-9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
-    Manager "tcp:10.0.0.100:6640"
-        is_connected: true
-    Bridge br-int
-        Controller "tcp:10.0.0.100:6653"
-        fail_mode: secure
-        Port br-int
-            Interface br-int
-    ovs_version: "2.3.2"
+
+ [root@compute1 ~]# ovs-vsctl show
+ 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
+     Manager "tcp:10.0.0.100:6640"
+         is_connected: true
+     Bridge br-int
+         Controller "tcp:10.0.0.100:6653"
+         fail_mode: secure
+         Port br-int
+             Interface br-int
+     ovs_version: "2.3.2"

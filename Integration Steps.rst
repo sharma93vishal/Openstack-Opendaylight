@@ -30,8 +30,8 @@ Installation of Open Daylight
 
 **Prerequisites** :
 
-+ 1. Open Daylight software runs on platform independent Java virtual machine and can be installed on any Operating system on which Java is installed.
-+ 2. The basic requirement is to install it on a system with a multi-core processor and 8 GB RAM in order to get optimum results.
+ 1. Open Daylight software runs on platform independent Java virtual machine and can be installed on any Operating system on which Java is installed.
+ 2. The basic requirement is to install it on a system with a multi-core processor and 8 GB RAM in order to get optimum results.
 
 * Command to install java jdk on Linux (Ubuntu)::
 
@@ -117,6 +117,7 @@ The Neutron OVS plugin has to be deleted from compute & Network node because Neu
 Connect Open vSwitch with Open Daylight 
 =======================================
 Local IP has to be given within Open vSwitch to create tunnels. 
+
 * Command given below is used for that purpose::
 
     # ovs-vsctl set Open_vSwitch <OPENVSWITCH ID> other_config:local_ip=’IP address’

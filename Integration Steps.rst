@@ -59,4 +59,5 @@ To use Open Daylight with Open Stack, the features of Open Stack have to be inst
 
 Command given above will install all the features to connect with Open Stack.
 After this, to check whether everything works fine, use curl command. It will show empty network list.
+
 **curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks**

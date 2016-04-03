@@ -42,23 +42,27 @@ Uncompress the packages : **#tar -xvf distribution-karaf-0.4.0-Beryllium.tar.gz*
 
 To use the OpenFlow version 1.3, make the changes in the file **etc/custom.properties** in line number 82. Make sure this line is uncommented.
 
-**ovsdb.of.version=1.3**
+ ovsdb.of.version=1.3
+ 
+Start the controller
 
-Start the controller: **./bin/start**
+    ./bin/start
 Controller will start subsequently, in case ports have to be checked, **netstat –ntl** is the command.
-To take the access of controller as a client: 
-**./bin/client –u karaf**
+To take the access of controller as a client:
+    ./bin/client –u karaf
 
 .. Image:: https://github.com/sharma93vishal/Openstack-Opendaylight/blob/master/Images/Picture1.png
 
 To use Open Daylight with Open Stack, the features of Open Stack have to be installed on the controller.
 
-**opendaylight-user@root>feature:install odl-ovsdb-openstack odl-dlux-all**
+
+    opendaylight-user@root>feature:install odl-ovsdb-openstack odl-dlux-all
+
 
 Command given above will install all the features to connect with Open Stack.
 After this, to check whether everything works fine, use curl command. It will show empty network list.
 
-**curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks**
+    **curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks**
 
 Erase all VMs, Networks, Routers & Ports in Controller Node 
 ===========================================================
@@ -67,59 +71,73 @@ In order to allow Open Daylight to work with Open Stack, all the Virtual Machine
 Following steps will guide you through the cleaning process.
 
 * Delete all the instances::
- **# nova delete <instance names>**
+
+    # nova delete <instance names>
 * Remove all the routers::
- **# neutron router-delete <router name>**
+
+    # neutron router-delete <router name>
 * Delete all the subnets & networks::
- **# neutron subnet-delete <subnet name>**
- **# neutron net-delete <net name>**
+
+    # neutron subnet-delete <subnet name>
+    # neutron net-delete <net name>
 * Check that all ports have been cleaned – at this point, this should be an empty list::
- **# neutron port-list**
+
+    # neutron port-list
 * Stop the neutron-server::
- To avoid the conflict between Neutron and Open Daylight, neutron-server has to be shutdown.
- 
- **# service neutron-server stop**
+To avoid the conflict between Neutron and Open Daylight, neutron-server has to be shutdown.
+
+    # service neutron-server stop
 
 Open vSwitches in Compute & Network node 
 ========================================
 The Neutron OVS plugin has to be deleted from compute & Network node because Neutron is not handling OVS switches no more. So all the configurations of the OVS switches are needed to be cleaned.
 
 * Delete the neutron ovs-plugin agent::
- **# apt-get purge neutron-plugin-openvswitch-agent**
+
+    # apt-get purge neutron-plugin-openvswitch-agent
 * Stop the OVS switches::
- **# service openvswitch-switch stop**
+
+    # service openvswitch-switch stop
 * Delete all the logs & ovs databases::
- **# rm -rf /var/log/openvswitch/***
- 
- **# rm -rf /etc/openvswitch/conf.db**
+
+    # rm -rf /var/log/openvswitch/*
+    # rm -rf /etc/openvswitch/conf.db
 * Start the OVS switches::
- **# service openvswitch-switch start**
+
+    # service openvswitch-switch start
 * Check the ovs-vsctl, This will return empty set, except OVS ID and OVS version::
- **# ovs-vsctl show**
+
+    # ovs-vsctl show
 
 Connect Open vSwitch with Open Daylight 
 =======================================
 Local IP has to be given within Open vSwitch to create tunnels. Command given below is used for that purpose.
 
-**# ovs-vsctl set Open_vSwitch <OPENVSWITCH ID> other_config:local_ip=’IP address’**
+
+    # ovs-vsctl set Open_vSwitch <OPENVSWITCH ID> other_config:local_ip=’IP address’
 
 * Create bridge br-ex for external traffic::
 
- **# ovs-vsctl add-br br-ex**
- **# ovs-vsctl add-port br-ex eth1**
+    # ovs-vsctl add-br br-ex
+    # ovs-vsctl add-port br-ex eth1
 * To set the manager for openvswitch::
- **# ovs-vsctl set-manager tcp:10.0.0.100:6640**
+    # ovs-vsctl set-manager tcp:10.0.0.100:6640
  
  This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches, high level control flow is given below, to explain the methodology.
 
+    [root@compute1 ~]# ovs-vsctl show 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
+        Manager "tcp:10.0.0.100:6640"
+            is_connected: true
+        Bridge br-int
+            Controller "tcp:10.0.0.100:6653"
+            fail_mode: secure
+            Port br-int
+                Interface br-int
+        ovs_version: "2.3.2"
 
- [root@compute1 ~]# ovs-vsctl show
- 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
-     Manager "tcp:10.0.0.100:6640"
-         is_connected: true
-     Bridge br-int
-         Controller "tcp:10.0.0.100:6653"
-         fail_mode: secure
-         Port br-int
-             Interface br-int
-     ovs_version: "2.3.2"
+* Edit /etc/hosts::
+
+    vi /etc/hosts
+        
+    #controller
+    10.0.0.11       controller

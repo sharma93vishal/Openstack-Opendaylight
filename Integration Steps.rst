@@ -7,7 +7,7 @@ Welcome to Open Stack Inteagration with Open Daylight Manual !
 This document is based on `the official Documentation <https://wiki.opendaylight.org/view/OpenStack_and_OpenDaylight>`_
 
 :Version: 1.0
-:Authors: Vishal Sharma
+:Author: Vishal Sharma
 :Keywords: OpenStack, Opendaylight, Integration of Openstack with opendaylight
 
 ===============================

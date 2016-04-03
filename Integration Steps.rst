@@ -178,7 +178,7 @@ Neutron database has to be cleaned because of the no compatibility of Open vSwit
     # grant all privileges on neutron.* to 'neutron'@'localhost' identified by 'neutron_openstack';
     # grant all privileges on neutron.* to 'neutron'@'%' identified by 'neutron_openstack';
     # exit
-* To get the database schema for neutron databse::
+* To get the database schema for neutron database::
 
     # su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
 

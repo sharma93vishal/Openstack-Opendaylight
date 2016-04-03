@@ -84,7 +84,8 @@ Following steps will guide you through the cleaning process.
 
     # neutron port-list
 * Stop the neutron-server::
-To avoid the conflict between Neutron and Open Daylight, neutron-server has to be shutdown.
+
+    To avoid the conflict between Neutron and Open Daylight, neutron-server has to be shutdown.
 
     # service neutron-server stop
 
@@ -113,7 +114,6 @@ Connect Open vSwitch with Open Daylight
 =======================================
 Local IP has to be given within Open vSwitch to create tunnels. Command given below is used for that purpose.
 
-
     # ovs-vsctl set Open_vSwitch <OPENVSWITCH ID> other_config:local_ip=’IP address’
 
 * Create bridge br-ex for external traffic::
@@ -121,6 +121,7 @@ Local IP has to be given within Open vSwitch to create tunnels. Command given be
     # ovs-vsctl add-br br-ex
     # ovs-vsctl add-port br-ex eth1
 * To set the manager for openvswitch::
+
     # ovs-vsctl set-manager tcp:10.0.0.100:6640
  
  This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches, high level control flow is given below, to explain the methodology.
@@ -135,9 +136,4 @@ Local IP has to be given within Open vSwitch to create tunnels. Command given be
                 Interface br-int
         ovs_version: "2.3.2"
 
-* Edit /etc/hosts::
 
-    vi /etc/hosts
-        
-    #controller
-    10.0.0.11       controller

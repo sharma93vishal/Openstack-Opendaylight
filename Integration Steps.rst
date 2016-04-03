@@ -33,34 +33,37 @@ Installation of Open Daylight
 + 1. Open Daylight software runs on platform independent Java virtual machine and can be installed on any Operating system on which Java is installed.
 + 2. The basic requirement is to install it on a system with a multi-core processor and 8 GB RAM in order to get optimum results.
 
-Command to install java jdk on Linux (Ubuntu)
-**#apt-get install openjdk-7-jdk**
+* Command to install java jdk on Linux (Ubuntu)::
+
+    #apt-get install openjdk-7-jdk
 
 Download the latest version of Open Daylight from their `official website <https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.4.0-Beryllium/distribution-karaf-0.4.0-Beryllium.tar.gz>`_ by using wget command.
  
-Uncompress the packages : **#tar -xvf distribution-karaf-0.4.0-Beryllium.tar.gz**
+* Uncompress the packages::
 
-To use the OpenFlow version 1.3, make the changes in the file **etc/custom.properties** in line number 82. Make sure this line is uncommented.
+    #tar -xvf distribution-karaf-0.4.0-Beryllium.tar.gz
 
- ovsdb.of.version=1.3
+* To use the OpenFlow version 1.3, make the changes in the file **etc/custom.properties** in line number 82. Make sure this line is uncommented::
+
+    ovsdb.of.version=1.3
  
-Start the controller
+* Start the controller::
 
     ./bin/start
 Controller will start subsequently, in case ports have to be checked, **netstat –ntl** is the command.
-To take the access of controller as a client:
+* To take the access of controller as a client::
+
     ./bin/client –u karaf
 
 .. Image:: https://github.com/sharma93vishal/Openstack-Opendaylight/blob/master/Images/Picture1.png
 
-To use Open Daylight with Open Stack, the features of Open Stack have to be installed on the controller.
-
+* To use Open Daylight with Open Stack, the features of Open Stack have to be installed on the controller::
 
     opendaylight-user@root>feature:install odl-ovsdb-openstack odl-dlux-all
+    
+    Command given above will install all the features to connect with Open Stack.
 
-
-Command given above will install all the features to connect with Open Stack.
-After this, to check whether everything works fine, use curl command. It will show empty network list.
+* After this, to check whether everything works fine, use curl command. It will show empty network list::
 
     **curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks**
 
@@ -224,6 +227,7 @@ The integration process has been completed, Now verification has to be carried o
 Network reflection on the Open Daylight
 =======================================
 Networks which are made on the openstack, can be seen on the Open Daylight through curl command
+
 * Use curl command to check the networks::
 
     root@controller:~# curl -u admin:admin http://10.0.0.100:8181/controller/nb/v2/neutron/networks

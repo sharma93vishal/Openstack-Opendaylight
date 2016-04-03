@@ -113,6 +113,11 @@ The Neutron OVS plugin has to be deleted from compute & Network node because Neu
 * Check the ovs-vsctl, This will return empty set, except OVS ID and OVS version::
 
     # ovs-vsctl show
+    
+    [root@compute1 ~]# ovs-vsctl show 
+        9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
+    
+        ovs_version: "2.3.2"
 
 Connect Open vSwitch with Open Daylight 
 =======================================
@@ -131,7 +136,8 @@ Local IP has to be given within Open vSwitch to create tunnels.
     # ovs-vsctl set-manager tcp:10.0.0.100:6640
     This command will use ODL controller a manager for the OVS and create the br-int bridge automatically in the OVS switches.
 
-    [root@compute1 ~]# ovs-vsctl show 9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
+    [root@compute1 ~]# ovs-vsctl show 
+        9f3b38cb-eefc-4bc7-828b-084b1f66fbfd
         Manager "tcp:10.0.0.100:6640"
             is_connected: true
         Bridge br-int

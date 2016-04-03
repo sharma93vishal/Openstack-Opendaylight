@@ -1,3 +1,3 @@
 # Openstack-Opendaylight
 
-How thinsg Works in Open Stack & Open Daylight
+How things Works in Open Stack & Open Daylight
